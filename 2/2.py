@@ -1,4 +1,5 @@
 import argparse
+import functools
 import re
 
 def update_game_result(game_result, draw_result):
@@ -48,14 +49,19 @@ def part_one(filename):
                 if key not in max_values or value > max_values[key]:
                     valid = False
                     break
-
-            print(f"{valid} --- {line}")
             if valid:
                 total += int(game_number)
     return total
 
 def part_two(filename):
-    pass
+    total = 0
+
+    with open(filename, 'r') as f:
+        for line in f:
+            game_number, game_result = parse_game(line)
+            power = functools.reduce(lambda x, y: x*y, game_result.values())
+            total += power
+    return total
 
 def run_tests():
     draw = '3 blue, 4 red, 1 green'
